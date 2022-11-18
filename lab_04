@@ -1,0 +1,37 @@
+#lab4
+#zadanie 1.a
+select * from postac
+where nazwa != 'Bjorn' and rodzaj='wiking'
+order by data_ur ASC
+limit 2;
+delete from postac where id_postaci IN (8,10);
+select * from postac;
+
+#zadanie 1.b
+alter table przetwory drop foreign key przetwory_ibfk_1;
+alter table walizka drop foreign key walizka_ibfk_1;
+alter table postac modify id_postaci int;
+alter table postac drop primary key;
+show create table przetwory;
+
+#zadanie 2.a
+
+alter table postac add pesel char(11) first; #first - wstawianie kolumny jako pierwsza w tabeli
+select * from postac;
+update postac set pesel='98463728193' + id_postaci;
+alter table postac modify pesel char(11) primary key;
+
+#2.b
+desc postac;
+alter table postac modify rodzaj enum('wiking','ptak','kobieta','syrena');
+#2.c
+insert into postac(pesel,id_postaci, nazwa, rodzaj) Values(84638591068,12,  'Gertruda Nieszczera', 'syrena');
+
+#zadanie 3.a
+select * from postac;
+update postac set statek='Statek_1' where nazwa LIKE '%a%';
+
+#zadanie 3.b
+select * from statek;
+update statek set max_ladownosc = max_ladownosc *0.7 where data_wodowania >='1540-01-01' and data_wodowania <= '1580-01-01'; 
+#where year(data_wodowania) between 1540 and 1580 - alternatywna postac

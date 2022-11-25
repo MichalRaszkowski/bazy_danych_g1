@@ -35,3 +35,27 @@ update postac set statek='Statek_1' where nazwa LIKE '%a%';
 select * from statek;
 update statek set max_ladownosc = max_ladownosc *0.7 where data_wodowania >='1540-01-01' and data_wodowania <= '1580-01-01'; 
 #where year(data_wodowania) between 1540 and 1580 - alternatywna postac
+
+#zadanie 4.a
+alter table postac modify rodzaj enum('wiking','ptak','kobieta','syrena','waz');
+insert into postac (pesel, id_postaci, nazwa, rodzaj) values ('12364962049', 13,  'loko', 'waz'); 
+#zadanie 4.b
+#opcja 1 - przeniesie klucz glowny, tylko struktura
+create table marynarz like postac;
+#dodanie danych
+insert into marynarz select * from postac;
+
+#opcja 2 - przeniesie dane, struktura + dane
+create table marynarz select * from postac;
+alter table marynarz add primary key (pesel);
+#zadanie 5.a
+update marynarz set statek = NULL where statek in ('Statek_1', 'Statek_2');
+#zadanie 5.b
+delete from marynarz where id_postaci = 7;
+#zadanie 5.c
+alter table postac drop foreign key postac_ibfk_1;
+delete from statek where nazwa_statku in ('Statek_1', 'Statek_2');
+#zadanie 5.d
+drop table statek;
+#zadanie 5.e
+create table zwierz (id int primary key auto_increment, nazwa varchar(255), wiek int);

@@ -1,0 +1,48 @@
+#zad 1.1
+select sum(udzwig) from kreatura;
+select avg(udzwig) from kreatura;
+select max(udzwig) from kreatura;
+select min(udzwig) from kreatura;
+select count(nazwa) from kreatura; 
+select count(*) from kreatura;
+
+#zad 1.1
+select avg(waga) from kreatura where rodzaj='wiking';
+
+#zad 1.2
+select rodzaj, avg(waga), count(*) from kreatura group by rodzaj;
+
+#zad.1.3
+select rodzaj, avg(wiek) , count(*) from kreatura where year(dataUr);
+select avg(2022-year(dataUr)) as wiek from kreatura group by rodzaj;
+select rodzaj,avg(year(now())-year(dataUr)) as wiek from kreatura group by rodzaj;
+
+#zad 2.1
+select rodzaj, sum(waga*ilosc) from wikingowie.zasob group by  rodzaj;
+select nazwa,rodzaj, sum(waga*ilosc) from wikingowie.zasob group by nazwa, rodzaj;
+select nazwa,rodzaj, sum(waga*ilosc) from wikingowie.zasob group by nazwa, rodzaj with rollup order by rodzaj;
+select year(dataPozyskania), AS rok, month(dataPozyskania) as miesiac, count(*) from wikingowie.zasob group by rok, miesiac with rollup;
+select rodzaj, count(nazwa) from kreatura group by rodzaj  having count(nazwa)>1;
+
+#zad 2.2
+select nazwa, count(waga) from wikingowie.zasob group by  nazwa having ilosc>=4 and sum(waga)>10; #błąd 
+select nazwa,avg(waga) from wikingowie.zasob where ilosc >=4 group by nazwa having avg(waga)>10; # 1 wersja
+select * from wikingowie.zasob order by waga;
+select nazwa,avg(waga) from wikingowie.zasob group by nazwa having avg(waga)>10 and sum(ilosc>=4);
+
+#zad 2 3
+select rodzaj ,avg(nazwa) from wikingowie.zasob
+select rodzaj, count(nazwa) from wikingowie.zasob where ilosc >1 group by rodzaj;
+select count(*) from wikingowie.zasob where rodzaj='jedzenie';
+
+#zad 3 
+select  * from kreatura, ekwipunek where kreatura.idKreatury=ekwipunek.idKreatury;
+
+select  * from kreatura inner join  ekwipunek on kreatura.idKreatury=ekwipunek.idKreatury;
+
+
+# zad 4 
+#zad.4.1
+select  k.nazwa,z.nazwa, dataUr from wikingowie.zasob z inner join  wikingowie.kreatura k inner join wikingowie.ekwipunek  on wikingowie.ekwipunek.idKreatury=k.idKreatury  on wikingowie.ekwipunek.idZasobu=z.idZasobu where dataUr like '167%';
+#zad 4.2
+select  dataUr,k.nazwa,z.rodzaj from wikingowie.kreatura k inner join  wikingowie.ekwipunek e inner join wikingowie.zasob z on z.idZasobu=e.idZasobu  on k.idKreatury=e.idKreatury where z.rodzaj='jedzenie' order by dataUr ASC limit 5;

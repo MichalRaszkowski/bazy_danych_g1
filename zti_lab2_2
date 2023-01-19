@@ -1,0 +1,37 @@
+#zad 2.1
+select p.imie, p.nazwisko from pracownik p join dzial d on p.dzial=d.id_dzialu;
+#zad 2.2
+select t.nazwa_towaru, k.nazwa_kategori, sm.ilosc from towar t 
+join kategoria k on t.kategoria=k.id_kategori 
+join stan_magazynowy sm on t.id_towaru=sm.towar 
+order by ilosc desc;
+#zad 2.3
+select * from status_zamowienia;
+select * from zamowienie z join status_zamowienia sm on z.status_zamowienia=sm.id_statusu_zamowienia 
+where nazwa_statusu_zamowienia='anulowane';
+#zad 2.4
+select * from klient k join adres_klienta ak on k.id_klienta=ak.klient 
+join typ_adresu ta on ta.id_typu=ak.typ_adresu
+where ak.miejscowosc='Olsztyn' and ta.id_typu=1;
+
+select id_jednostki from jednostka_miary where id_jednostki not in (select distinct jm from stan_magazynowy);
+select distinct jm.id_jednostki, sm.jm from jednostka_miary jm 
+left join stan_magazynowy sm on jm.id_jednostki=sm.jm where sm.jm is null;
+
+#zadanie 6
+select z.numer_zamowienia, t.nazwa_towaru, pz.ilosc, pz.cena from zamowienie z 
+join pozycja_zamowienia pz on pz.zamowienie=z.id_zamowienia join towar t on t.id_towaru=pz.towar
+where year(z.data_zamowienia)=2018;
+
+#zadanie 7
+create table towary_full_info 
+(select t.nazwa_towaru, t.cena_zakupu, 
+k.nazwa_kategori ,sm.ilosc, jm.nazwa
+from __firma_zti.towar t
+join __firma_zti.kategoria k ON k.id_kategori=t.kategoria 
+join __firma_zti.stan_magazynowy sm ON sm.towar=t.id_towaru
+join __firma_zti.jednostka_miary jm on sm.jm=jm.id_jednostki);
+
+#zad 8
+Select * from pozycja_zamowienia pz
+inner join (select * from zamowienie order by data_zamowienia asc limit 5) as z on z.id_zamowienia=pz.zamowienie;
